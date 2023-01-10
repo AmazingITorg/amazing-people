@@ -70,7 +70,7 @@ jobs:
           sed -i 's/<PIPELINE_PGDATABSE>/peopledb/' package.json
           sed -i 's/<PIPELINE_PGPORT>/6432/' package.json
           npm run migrate
-          npm test-in-pipeline
+          npm run test-in-pipeline
           
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v3
