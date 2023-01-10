@@ -11,6 +11,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.8.0
+          
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ./backend/node_modules
+          key: modules-${{ hashFiles('./backend/package-lock.json') }}
+
+      - name: Build
+        if: steps.cache.outputs.cache-hit != 'true'
+        working-directory: ./backend
+        run: |
+          npm i
       
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
