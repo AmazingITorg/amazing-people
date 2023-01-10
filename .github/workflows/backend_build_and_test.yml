@@ -46,7 +46,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./backend/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('./backend/package-lock.json') }}
 
       - name: Build
         if: steps.cache.outputs.cache-hit != 'true'
