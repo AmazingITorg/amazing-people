@@ -112,3 +112,8 @@ jobs:
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            
+  Snyk:
+    uses: ./.github/workflows/snyk_check.yml
+    secrets:
+      snyk_token: ${{ secrets.SNYK_TOKEN }}
