@@ -1,4 +1,5 @@
 const PeopleService = require('../main/services/people-service.js')
+
 describe("People Service Tests", () => {
     test('Should get all people', () => {
         let people = PeopleService.getPeople();

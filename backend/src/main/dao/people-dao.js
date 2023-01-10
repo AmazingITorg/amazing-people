@@ -10,8 +10,14 @@ async function getById(id) {
     return res.rows;
 }
 
+async function getByName(name) {
+    let res = await dbPool.query("select * from person where name = '" + name + "'");
+    return res.rows;
+}
+
 async function createPerson(person) {
     console.log("Creating person in the database...")
+    console.log(person)
     const query = 'INSERT INTO person(name, is_amazing) VALUES($1, $2)'
     const values = [person.name, person.isAmazing]
 
@@ -30,5 +36,6 @@ module.exports = {
     getAllPeople: getAllPeople,
     createPerson: createPerson,
     deletePerson: deletePerson,
-    getById: getById
+    getById: getById,
+    getByName: getByName
 }

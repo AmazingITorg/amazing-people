@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 const peopleDao = require('../dao/people-dao.js')
+const amazingnessService = require('./amazingness-service.js')
 const dotenv = require("dotenv")
 dotenv.config()
 
@@ -26,22 +27,17 @@ class PeopleService {
     static async getPersonById(id) {
         return peopleDao.getById(id);
     }
+
+    static async getByName(name) {
+        return peopleDao.getByName(name);
+    }
     static async deletePerson(name) {
         return peopleDao.deletePerson(name)
     }
     static async createPerson(person) {
-        let isPersonAmazing = true;
-        try {
-            let res = await axios.get(`${process.env.AMAZING_ALG_URL}?name=${person.name}`)
-            console.log('result : ' + JSON.stringify(res.data)); // no data received
-            console.log('is the person amazing? - ' + res.data.personAmazing)
-            isPersonAmazing = res.data.personAmazing;
-        }
-        catch (err) {
-            console.log("An error occured when checking the amazingnes of the person '" + person.name + "'")
-            console.log(err);
-            return;
-        }
+        console.log('Create amazing person')
+        console.log(person)
+        let isPersonAmazing = await amazingnessService.isPersonAmazing(person)
 
         if (!isPersonAmazing) {
             console.log("Person is not amazing!")

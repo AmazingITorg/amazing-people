@@ -1,4 +1,5 @@
 const PeopleService = require('../main/services/people-service.js')
+const AmazingnessService = require('../main/services/amazingness-service.js')
 const DB = require('../main/dao/db-pool.js');
 
 describe("Integration Tests", () => {
@@ -17,9 +18,13 @@ describe("Integration Tests", () => {
     })
 
     test('Should insert a person into the DB', async () => {
-        await PeopleService.createPerson({ id: 2000, name: 'TestPerson' });
+        const mockAmazingnessCheck = jest.fn().mockReturnValue(true)
+        AmazingnessService.isPersonAmazing = mockAmazingnessCheck;
 
-        let person = await PeopleService.getPersonById(2000);
+        await PeopleService.createPerson({ name: 'TestPerson' });
+
+        let person = await PeopleService.getByName('TestPerson');
+
         expect(person[0].name).toBe('TestPerson');
     })
 
