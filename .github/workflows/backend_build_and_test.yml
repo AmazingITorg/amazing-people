@@ -1,0 +1,81 @@
+name: Build and Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Build-and-Test:
+    runs-on: ubuntu-latest
+    services:
+      # label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres:latest
+        # service environment variables
+        # `POSTGRES_HOST` is `postgres`
+        env:
+          # optional (defaults to `postgres`)
+          POSTGRES_DB: peopledb
+          # required
+          POSTGRES_PASSWORD: postgresPasswort
+          # optional (defaults to `5432`)
+          POSTGRES_PORT: 5432
+          # optional (defaults to `postgres`)
+          POSTGRES_USER: postgresUser
+        ports:
+          # maps tcp port 5432 on service container to the host
+          - 6432:5432
+        # set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.8.0
+          
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v2
+        working-directory: ./backend
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}
+
+      - name: Build
+        if: steps.cache.outputs.cache-hit != 'true'
+        working-directory: ./backend
+        run: |
+          npm i
+      
+      - name: Unit and Integration Tests
+        working-directory: ./backend
+        id: tests
+        run: |
+          sed -i 's/<PGUSER>/postgresUser/' flyway/flyway.conf
+          sed -i 's/<PGPASSWORD>/postgresPasswort/' flyway/flyway.conf
+          sed -i 's/<PGDATABASE>/peopledb/' flyway/flyway.conf
+          sed -i 's/<PGPORT>/6432/' flyway/flyway.conf
+          sed -i 's/<PGHOST>/localhost/' flyway/flyway.conf
+          
+          sed -i 's/<PIPELINE_PGUSER>/postgresUser/' package.json
+          sed -i 's/<PIPELINE_PGHOST>/localhost/' package.json
+          sed -i 's/<PIPELINE_PGPASSWORD>/postgresPasswort/' package.json
+          sed -i 's/<PIPELINE_PGDATABSE>/peopledb/' package.json
+          sed -i 's/<PIPELINE_PGPORT>/6432/' package.json
+          npm run migrate
+          npm test-in-pipeline
+          
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: tests-coverage
+          path: coverage/lcov.info
+          retention-days: 1
