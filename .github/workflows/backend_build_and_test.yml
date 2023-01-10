@@ -76,5 +76,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: tests-coverage
-          path: coverage/lcov.info
+          path: ./backend/coverage/lcov.info
           retention-days: 1
