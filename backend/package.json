@@ -30,9 +30,7 @@
 			"debug": "^4.1.0"
 		},
 		"flywaydb-cli": {
-			"extract-zip": {
-				"debug": "^4.1.0"
-			}
+			"extract-zip": "^2.0.1"
 		}
 	},
 	"devDependencies": {
