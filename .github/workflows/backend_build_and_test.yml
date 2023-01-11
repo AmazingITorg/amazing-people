@@ -54,6 +54,11 @@ jobs:
         run: |
           npm i
       
+      - name: Code Linting
+        working-directory: ./backend
+        run: |
+          npm run lint
+      
       - name: Unit and Integration Tests
         working-directory: ./backend
         id: tests
