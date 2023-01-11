@@ -120,7 +120,7 @@ jobs:
   
   Build-and-push-docker-image:
     needs: [Build-and-Test, SonarCloud-Analysis, Snyk]
-    name: Build and push Docker image to Docker Hub
+    name: Build and push Docker image
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
