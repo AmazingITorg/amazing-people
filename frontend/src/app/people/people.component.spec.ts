@@ -8,7 +8,7 @@ describe('PeopleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule],
+      imports: [HttpClientTestingModule],
       declarations: [ PeopleComponent ]
     })
     .compileComponents();
