@@ -6,7 +6,6 @@ on:
 jobs:
   Build-and-Test:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -28,6 +27,6 @@ jobs:
         working-directory: ./frontend
         run: npm install
      
-     - name: Run Unit Tests
+      - name: Run Unit Tests
         working-directory: ./frontend
         run: npm run unit-tests-once
