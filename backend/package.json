@@ -25,7 +25,10 @@
 		"pg": "^8.8.0"
 	},
 	"overrides": {
-		"debug@<3.1.0": "3.1.0"
+		"debug@<3.1.0": "3.1.0",
+		"express": {
+			"debug": "3.1.0"
+		}
 	},
 	"devDependencies": {
 		"jest": "^29.2.2"
