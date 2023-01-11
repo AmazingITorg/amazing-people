@@ -8,9 +8,9 @@ app.disable("x-powered-by");
 
 const PeopleService = require("./services/people-service.js");
 
-// let corsOptions = {
-//     origin: 'localhost:4200'
-// };
+let corsOptions = {
+    origin: 'localhost:4200'
+};
 app.use(cors({ origin: '*' }));
 app.use(express.urlencoded({
     extended: true
