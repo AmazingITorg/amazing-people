@@ -1,0 +1,17 @@
+<div class="outer">
+    <div class="wrapper">
+        <div class="header">Amazing People</div>
+
+        <div class="form">
+
+            <input id="name" type="text" [formControl]="name" (keyup.enter)="addNewAmazingPerson(name.value)" placeholder="Name">
+            <button class="button" type="button" [disabled]="name.value === ''" (click)="addNewAmazingPerson(name.value)">Add new amazing person</button>
+            <div class="error" *ngIf="errorMessage.length>0">{{errorMessage}}</div>
+        </div>
+
+        <div class="content">
+            <div *ngFor="let p of people" class="person">{{p.name}} <div class="delete" (click)="deleteAmazingPerson(p.name)">X</div>
+            </div>
+        </div>
+    </div>
+</div>

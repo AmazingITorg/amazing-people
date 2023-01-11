@@ -1,0 +1,97 @@
+.outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 600px;
+}
+.header {
+  font-family: "PeopleFontBold";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 3rem;
+  font-size: x-large;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px;
+}
+
+.person {
+  display: flex;
+  justify-content: space-between;
+  &:hover .delete {
+    visibility: visible;
+    background-color: rgb(247, 169, 155);
+  }
+
+  .delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    position: relative;
+    left: 10px;
+    font-size: small;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 100%;
+    cursor: pointer;
+  }
+}
+
+.button {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  position: relative;
+}
+.form {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+
+  input {
+    text-align: center;
+    padding: 5px 10px;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.error {
+  color: red;
+  max-width: 200px;
+  animation: fade-out 5s;
+}
+
+button:disabled,
+button[disabled] {
+  background-color: #888888;
+}
