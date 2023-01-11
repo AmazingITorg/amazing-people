@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PeopleComponent } from './people.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('PeopleComponent', () => {
   let component: PeopleComponent;
@@ -8,6 +9,7 @@ describe('PeopleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [HttpClientTestingModule],
       declarations: [ PeopleComponent ]
     })
