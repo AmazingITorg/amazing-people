@@ -17,12 +17,12 @@ jobs:
         with:
           node-version: 16.8.0
           
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v2
-        with:
-          path: ./backend/node_modules
-          key: modules-${{ hashFiles('./backend/package-lock.json') }}
+#       - name: Cache dependencies
+#         id: cache
+#         uses: actions/cache@v2
+#         with:
+#           path: ./backend/node_modules
+#           key: modules-${{ hashFiles('./backend/package-lock.json') }}
 
       - name: Build
         if: steps.cache.outputs.cache-hit != 'true'
