@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 const peopleDao = require('../dao/people-dao.js')
 const amazingnessService = require('./amazingness-service.js')
 const dotenv = require("dotenv")
