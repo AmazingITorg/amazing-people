@@ -44,11 +44,43 @@ jobs:
           with:
             args: >
               -Dsonar.organization=amazingitorg
-              -Dsonar.projectKey=AmazingITorg_amazing-people
+              -Dsonar.projectKey=amazing-people-frontend
               -Dsonar.qualitygate.wait=true
               -Dsonar.javascript.lcov.reportPaths=lcov.info
               -Dsonar.sources=./frontend/src/app
               -Dsonar.verbose=true
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_FRONTEND_TOKEN }}
+            
+  Snyk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.13.0
+          
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ./frontend/node_modules
+          key: modules-${{ hashFiles('./frontend/package-lock.json') }}
+
+      - name: Build
+        if: steps.cache.outputs.cache-hit != 'true'
+        working-directory: ./frontend
+        run: |
+          npm i
+      
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.snyk_token }}
+        with:
+          args: --file=./frontend/package.json --package-manager=npm
+
