@@ -107,7 +107,7 @@ jobs:
           with:
             args: >
               -Dsonar.organization=amazingitorg
-              -Dsonar.projectKey=AmazingITorg_amazing-people
+              -Dsonar.projectKey=amazing-people-backend
               -Dsonar.qualitygate.wait=true
               -Dsonar.javascript.lcov.reportPaths=lcov.info
               -Dsonar.sources=./backend/src/main
