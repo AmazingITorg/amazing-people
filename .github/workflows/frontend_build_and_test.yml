@@ -38,17 +38,7 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/checkout@v3
-
-        - name: Download test coverage artifact
-          uses: actions/download-artifact@v3
-          with:
-            name: tests-coverage
-            
-        - name: Check
-          run: |
-            ls
-            cat lcov.info
-            ls
+          
         - name: Analyze with SonarCloud
           uses: sonarsource/sonarcloud-github-action@master
           with:
