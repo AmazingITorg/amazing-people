@@ -16,7 +16,7 @@ class AmazingnessService {
         catch (err) {
             console.log("An error occured when checking the amazingnes of the person '" + person.name + "'")
             console.log(err);
-            return;
+            throw new Error("An error occured when checking the amazingnes of the person '" + person.name + "'");
         }
         return isPersonAmazing;
     }
