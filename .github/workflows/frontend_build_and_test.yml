@@ -2,6 +2,9 @@ name: Frontend Build and Test
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'frontend/**'
 
 jobs:
   Build-and-Test:
