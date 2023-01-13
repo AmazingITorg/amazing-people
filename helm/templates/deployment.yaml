@@ -43,7 +43,7 @@ spec:
             - name: PGDATABASE
               value: {{ .Values.postgresql.auth.database | quote }}
             - name: AMAZING_ALG_URL
-              value: "http://amazing-alg.amazing.svc.cluster.local:8080/amazing"
+              value: "http://amazingness-service.amazing.svc.cluster.local:8080/amazing"
             {{- end }}
           livenessProbe:
             httpGet:
