@@ -9,8 +9,7 @@ class AmazingnessService {
         let isPersonAmazing = true;
         try {
             let res = await axios.get(`${process.env.AMAZING_ALG_URL}?name=${person.name}`)
-            console.log('result : ' + JSON.stringify(res.data)); // no data received
-            console.log('is the person amazing? - ' + res.data.personAmazing)
+            console.log('Is the person amazing? - ' + res.data.personAmazing)
             isPersonAmazing = res.data.personAmazing;
         }
         catch (err) {
