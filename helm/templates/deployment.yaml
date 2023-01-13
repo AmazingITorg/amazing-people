@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "amazing-people-app.fullname" . }}
+  labels:
+    {{- include "amazing-people-app.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "amazing-people-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "amazing-people-app.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-backend
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository_backend }}:{{ .Values.image.tag_backend_container | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3001
+              protocol: TCP
+          env:
+            {{- if .Values.postgresql.enabled }}
+            - name: PGHOST
+              value: "{{ .Release.Name}}-postgresql-hl"
+            - name: PGPASSWORD
+              value: {{ .Values.postgresql.auth.password | quote }}
+            - name: PGUSER
+              value: {{ .Values.postgresql.auth.username | quote }}
+            - name: PGPORT
+              value: {{ .Values.postgresql.containerPorts.postgresql | quote }}
+            - name: PGDATABASE
+              value: {{ .Values.postgresql.auth.database | quote }}
+            - name: AMAZING_ALG_URL
+              value: "http://amazing-alg.amazing.svc.cluster.local:8080/amazing"
+            {{- end }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        - name: {{ .Chart.Name }}-frontend
+          securityContext:
+              {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository_frontend }}:{{ .Values.image.tag_frontend_container | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http-frontend
+              containerPort: 80
+              protocol: TCP
+          env:
+            {{- if .Values.postgresql.enabled }}
+            - name: BACKEND_URL
+              value: "{{ .Release.Name}}-postgresql-hl:3001"
+            {{- end }}
+          volumeMounts:
+          - name: config-prod
+            mountPath: "/usr/share/nginx/html/assets/config"
+            readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http-frontend
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http-frontend
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+      - name: config-prod
+        configMap:
+          name: config-prod
+          items:
+          - key: "config-prod.json"
+            path: "config-prod.json"
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

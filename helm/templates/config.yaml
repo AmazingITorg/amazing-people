@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-prod
+data:
+  config-prod.json:
+{{ include "config-prod.json" . | trim | quote | indent 4 }}

@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+
+metadata:
+
+  name: ingresses
+  namespace: amazing
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+
+spec:
+
+  rules:
+
+    - http:
+
+        paths:
+
+        - path: /
+
+          pathType: Prefix
+
+          backend:
+
+            service:
+
+              name: amazing-amazing-people-app
+
+              port:
+
+                number: 80
+        

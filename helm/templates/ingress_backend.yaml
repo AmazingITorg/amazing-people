@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+
+metadata:
+    name: ingress-backend
+    namespace: amazing
+    annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /$2
+
+spec:
+    rules:
+        - http:
+              paths:
+                  - path: /backend(/|$)(.*)
+
+                    pathType: Prefix
+
+                    backend:
+                        service:
+                            name: amazing-amazing-people-app
+
+                            port:
+                                number: 3001
+#http://<HOST>/backend rewrites to http://<HOST>/
+#http://<HOST>/backend/ rewrites to http://<HOST>/
+#http://<HOST>/backend/new rewrites to http://<HOST>/new
