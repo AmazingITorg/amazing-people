@@ -18,7 +18,7 @@ spec:
 
                     backend:
                         service:
-                            name: amazing-amazing-people-app
+                            name: {{ include "amazing-people-app.fullname" . }}
 
                             port:
                                 number: 3001
