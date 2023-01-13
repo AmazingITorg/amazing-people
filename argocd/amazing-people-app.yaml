@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: amazing-people
+  namespace: argocd # The namespace must match the namespace of your Argo CD instance.
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/AmazingITorg/amazing-people
+    targetRevision: HEAD
+    path: helm
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: amazing
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
