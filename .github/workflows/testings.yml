@@ -2,7 +2,7 @@ name: Testings
 
 on:
   workflow_dispatch:
-  
+
 env:
   CYPRESS_CACHE_FOLDER: cypress/cache
 
@@ -169,7 +169,7 @@ jobs:
       - name: Try
         working-directory: ./frontend
         run: |
-          wait 10s
+          sleep 10s
           curl localhost:8080
           curl http://localhost:8080
           curl http://localhost:8080/amazing
