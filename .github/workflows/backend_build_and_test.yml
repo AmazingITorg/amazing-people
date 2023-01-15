@@ -158,7 +158,7 @@ jobs:
         run: |
           DOCKER_IMAGE_TAG=`echo ${{ steps.meta.outputs.tags }} | cut -d ":" -f2`
           echo $DOCKER_IMAGE_TAG
-          run: echo "test=$DOCKER_IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "test=$DOCKER_IMAGE_TAG" >> $GITHUB_OUTPUT
           
   Update-Version:
     needs: [Build-and-push-docker-image]
