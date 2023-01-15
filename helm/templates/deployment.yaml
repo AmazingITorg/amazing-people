@@ -32,12 +32,23 @@ spec:
               protocol: TCP
           env:
             {{- if .Values.postgresql.enabled }}
-            - name: PGHOST
-              value: "{{ .Release.Name}}-postgresql-hl"
-            - name: PGPASSWORD
-              value: {{ .Values.postgresql.auth.password | quote }}
             - name: PGUSER
-              value: {{ .Values.postgresql.auth.username | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: pu.amazing-zalando-postgres.credentials.postgresql.acid.zalan.do
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pu.amazing-zalando-postgres.credentials.postgresql.acid.zalan.do
+                  key: password
+                  
+            - name: PGHOST
+              value: "amazing-zalando-postgres"
+            # - name: PGPASSWORD
+            #   value: {{ .Values.postgresql.auth.password | quote }}
+            # - name: PGUSER
+            #   value: {{ .Values.postgresql.auth.username | quote }}
             - name: PGPORT
               value: {{ .Values.postgresql.containerPorts.postgresql | quote }}
             - name: PGDATABASE
