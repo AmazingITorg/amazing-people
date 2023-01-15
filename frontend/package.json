@@ -10,8 +10,8 @@
     "unit-tests-once": "ng test --watch=false --browsers=ChromeHeadless",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run --headless --spec 'cypress/integration/mocked.cy.ts' --browser chrome",
-    "cypress:run-unmocked": "cypress run --spec 'cypress/integration/unmocked.cy.ts' --headless --browser chrome",
+    "cypress:run": "cypress run --spec 'cypress/e2e/mocked.cy.ts' --headless --browser chrome",
+    "cypress:run-unmocked": "cypress run --spec 'cypress/e2e/unmocked.cy.ts' --headless --browser chrome",
     "e2e-mocked": "start-server-and-test start http://localhost:4200 cypress:run",
     "e2e-unmocked": "start-server-and-test start http://localhost:4200 cypress:run-unmocked"
   },
