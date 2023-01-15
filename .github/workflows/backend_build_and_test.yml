@@ -126,7 +126,7 @@ jobs:
     name: Build and push Docker image
     runs-on: ubuntu-latest
     outputs:
-      imagetag: ${{ steps.dockertag.outputs.test }}
+      imagetag: ${{ steps.dockertag.outputs.tag }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -143,7 +143,7 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_NAMESPACE }}/${{ secrets.DOCKER_REPOSITORY }}
           tags: |
-            type=raw,dev
+            type=sha,format=long
       
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
@@ -158,11 +158,11 @@ jobs:
         run: |
           DOCKER_IMAGE_TAG=`echo ${{ steps.meta.outputs.tags }} | cut -d ":" -f2`
           echo $DOCKER_IMAGE_TAG
-          echo "test=$DOCKER_IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "tag=$DOCKER_IMAGE_TAG" >> $GITHUB_OUTPUT
           
   Update-Version:
     needs: [Build-and-push-docker-image]
-    name: Update version
+    name: Update image version to trigger deployment
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
@@ -171,15 +171,12 @@ jobs:
       - name: Update Version
         run: |
           echo ${{needs.Build-and-push-docker-image.outputs.imagetag}}
-          
-#           version=$(cat ./helm/values.yaml | grep tag: | awk '{print $2}')
-#           echo $version
-#           echo ${{ steps.meta.outputs.tags }} | cut -d ":" -f2
-#           DOCKER_IMAGE_TAG=`echo ${{ steps.meta.outputs.tags }} | cut -d ":" -f2`
-#           echo $DOCKER_IMAGE_TAG
-#           echo ${{ steps.meta.outputs.tags }}
-#           sed -i "s/$version/$DOCKER_IMAGE_TAG/" ./helm/values.yaml
-#           cat ./helm/values.yaml
+          version=$(cat ./helm/values.yaml | grep tag: | awk '{print $2}')
+          echo $version
+          DOCKER_IMAGE_TAG=${{needs.Build-and-push-docker-image.outputs.imagetag}}
+          echo $DOCKER_IMAGE_TAG
+          sed -i "s/$version/$DOCKER_IMAGE_TAG/" ./helm/values.yaml
+          cat ./helm/values.yaml
   
 #       - name: Commit & Push new image version
 #         uses: actions-js/push@v1.3
