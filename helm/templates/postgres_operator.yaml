@@ -1,0 +1,30 @@
+kind: "postgresql"
+apiVersion: "acid.zalan.do/v1"
+
+metadata:
+    name: "amazing-zalando-postgres"
+    namespace: "amazing"
+    labels:
+        team: amazing
+
+spec:
+    teamId: "amazing"
+    postgresql:
+        version: "14"
+    numberOfInstances: 1
+    volume:
+        size: "1Gi"
+    users:
+        pu: []
+    databases:
+        peopledb: pu
+    allowedSourceRanges:
+        # IP ranges to access your cluster go here
+
+    resources:
+        requests:
+            cpu: 50m
+            memory: 50Mi
+        limits:
+            cpu: 250m
+            memory: 250Mi
