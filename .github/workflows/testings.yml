@@ -41,12 +41,12 @@ jobs:
         with:
           node-version: 18.13.0
           
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v2
-        with:
-          path: ./backend/node_modules
-          key: modules-${{ hashFiles('./backend/package-lock.json') }}
+#       - name: Cache dependencies
+#         id: cache
+#         uses: actions/cache@v2
+#         with:
+#           path: ./backend/node_modules
+#           key: modules-${{ hashFiles('./backend/package-lock.json') }}
 
       - name: Build Backend
         if: steps.cache.outputs.cache-hit != 'true'
@@ -54,12 +54,12 @@ jobs:
         run: |
           npm i
           
-      - name: Cache node_modules
-        id: cache-clt
-        uses: actions/cache@v2
-        with:
-          path: ./frontend/node_modules
-          key: clt-modules-${{ hashFiles('./frontend/package-lock.json') }}
+#       - name: Cache node_modules
+#         id: cache-clt
+#         uses: actions/cache@v2
+#         with:
+#           path: ./frontend/node_modules
+#           key: clt-modules-${{ hashFiles('./frontend/package-lock.json') }}
           
       - name: Build Frontend
         if: steps.cache-clt.outputs.cache-hit != 'true'
