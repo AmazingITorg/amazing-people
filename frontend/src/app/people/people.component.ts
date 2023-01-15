@@ -77,6 +77,7 @@ export class PeopleComponent implements OnInit {
             console.log(res);
             this.people = res;
           });
+          this.ngOnInit();
         },
         error: (error) => {
           this.errorMessage = error.error.message;
