@@ -141,12 +141,12 @@ jobs:
         run: |
           npm i
           
-      - name: Cache node_modules
-        id: cache-clt
-        uses: actions/cache@v2
-        with:
-          path: ./frontend/node_modules
-          key: clt-modules-${{ hashFiles('./frontend/package-lock.json') }}
+#       - name: Cache node_modules
+#         id: cache-clt
+#         uses: actions/cache@v2
+#         with:
+#           path: ./frontend/node_modules
+#           key: clt-modules-${{ hashFiles('./frontend/package-lock.json') }}
           
       - name: Build Frontend
         if: steps.cache-clt.outputs.cache-hit != 'true'
