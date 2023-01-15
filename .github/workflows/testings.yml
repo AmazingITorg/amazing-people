@@ -31,73 +31,54 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-          
-      backend:
-        # Docker Hub image
-        image: cekocvetkov/amazing-people-backend:sha-f619aa79125e1f3c908ab1acd429ebdb1e0c73d0
-        env:
-          PGDATABASE: peopledb
-          PGPASSWORD: postgresPasswort
-          PGPORT: 6432
-          PGUSER: postgresUser
-          PGHOST: localhost
-        ports:
-          - 3001:3001
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.13.0
+          
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ./backend/node_modules
+          key: modules-${{ hashFiles('./backend/package-lock.json') }}
 
-      - name: Test
+      - name: Build Backend
+        if: steps.cache.outputs.cache-hit != 'true'
+        working-directory: ./backend
         run: |
-          sleep 5s
-          curl http://localhost:3001
-  
-#       - name: Setup node
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 18.13.0
+          npm i
           
-#       - name: Cache dependencies
-#         id: cache
-#         uses: actions/cache@v2
-#         with:
-#           path: ./backend/node_modules
-#           key: modules-${{ hashFiles('./backend/package-lock.json') }}
-
-#       - name: Build
-#         if: steps.cache.outputs.cache-hit != 'true'
-#         working-directory: ./backend
-#         run: |
-#           npm i
-      
-#       - name: Code Linting
-#         working-directory: ./backend
-#         run: |
-#           npm run lint
-      
-#       - name: Unit and Integration Tests
-#         working-directory: ./backend
-#         id: tests
-#         run: |
-#           sed -i 's/<PGUSER>/postgresUser/' flyway/flyway.conf
-#           sed -i 's/<PGPASSWORD>/postgresPasswort/' flyway/flyway.conf
-#           sed -i 's/<PGDATABASE>/peopledb/' flyway/flyway.conf
-#           sed -i 's/<PGPORT>/6432/' flyway/flyway.conf
-#           sed -i 's/<PGHOST>/localhost/' flyway/flyway.conf
+      - name: Cache node_modules
+        id: cache-clt
+        uses: actions/cache@v2
+        with:
+          path: ./frontend/node_modules
+          key: clt-modules-${{ hashFiles('./frontend/package-lock.json') }}
           
-#           sed -i 's/<PIPELINE_PGUSER>/postgresUser/' package.json
-#           sed -i 's/<PIPELINE_PGHOST>/localhost/' package.json
-#           sed -i 's/<PIPELINE_PGPASSWORD>/postgresPasswort/' package.json
-#           sed -i 's/<PIPELINE_PGDATABSE>/peopledb/' package.json
-#           sed -i 's/<PIPELINE_PGPORT>/6432/' package.json
-#           npm run migrate
-#           npm run test-in-pipeline
+      - name: Build Frontend
+        if: steps.cache-clt.outputs.cache-hit != 'true'
+        working-directory: ./frontend
+        run: npm install
+     
+      - name: Run Backend
+        working-directory: ./backend
+        run: |
+          sed -i 's/<PGUSER>/postgresUser/' flyway/flyway.conf
+          sed -i 's/<PGPASSWORD>/postgresPasswort/' flyway/flyway.conf
+          sed -i 's/<PGDATABASE>/peopledb/' flyway/flyway.conf
+          sed -i 's/<PGPORT>/6432/' flyway/flyway.conf
+          sed -i 's/<PGHOST>/localhost/' flyway/flyway.conf
           
-#       - name: 'Upload Artifact'
-#         uses: actions/upload-artifact@v3
-#         with:
-#           name: tests-coverage
-#           path: ./backend/coverage/lcov.info
-#           retention-days: 1
+          npm run migrate
+          npm run start-dev &
+     
+      - name: Run E2E Tests Mocked
+        working-directory: ./frontend
+        run: npm run integration-tests
 
