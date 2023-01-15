@@ -57,12 +57,12 @@ jobs:
         run: |
           npm i
           
-      - name: Cache node_modules
-        id: cache-clt
-        uses: actions/cache@v2
-        with:
-          path: ./frontend/node_modules
-          key: clt-modules-${{ hashFiles('./frontend/package-lock.json') }}
+#       - name: Cache node_modules
+#         id: cache-clt
+#         uses: actions/cache@v2
+#         with:
+#           path: ./frontend/node_modules
+#           key: clt-modules-${{ hashFiles('./frontend/package-lock.json') }}
           
       - name: Build Frontend
         if: steps.cache-clt.outputs.cache-hit != 'true'
@@ -165,7 +165,15 @@ jobs:
           sed -i 's/<PGHOST>/localhost/' flyway/flyway.conf
           npm run migrate
           npm run start-for-e2e &
-     
+          
+      - name: Try
+        working-directory: ./frontend
+        run: |
+          wait 10s
+          curl localhost:8080
+          curl http://localhost:8080
+          curl http://localhost:8080/amazing
+      
       - name: Run E2E Tests Unmocked
         working-directory: ./frontend
         run: npm run e2e-unmocked
