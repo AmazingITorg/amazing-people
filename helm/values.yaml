@@ -10,7 +10,7 @@ image:
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag_frontend_container: sha-0ff32c2a976a850380f2dca09b80ea1e6bb77e60
-  tag_backend_container: sha-a9a8fbf95e14b27a19f3726d666a4352f4a27e34
+  tag_backend_container: sha-f619aa79125e1f3c908ab1acd429ebdb1e0c73d0
 
 imagePullSecrets:
   - name: regcred
