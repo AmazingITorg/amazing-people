@@ -171,7 +171,7 @@ jobs:
       - name: Update Version
         run: |
           echo ${{needs.Build-and-push-docker-image.outputs.imagetag}}
-          version=$(cat ./helm/values.yaml | grep tag: | awk '{print $2}')
+          version=$(cat ./helm/values.yaml | grep tag_backend_container: | awk '{print $2}')
           echo $version
           DOCKER_IMAGE_TAG=${{needs.Build-and-push-docker-image.outputs.imagetag}}
           echo $DOCKER_IMAGE_TAG
