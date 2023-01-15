@@ -36,7 +36,7 @@ postgresql:
     password: "pass"
     username: "pu"
   containerPorts:
-    postgresql: 5432
+    postgresql: 7432
 
 securityContext:
   {}
