@@ -198,14 +198,6 @@ jobs:
           sed -i 's/<PGHOST>/localhost/' flyway/flyway.conf
           npm run migrate
           npm run start-for-e2e &
-          
-      - name: Try
-        working-directory: ./frontend
-        run: |
-          sleep 10s
-          curl localhost:8080
-          curl http://localhost:8080
-          curl http://localhost:8080/amazing
       
       - name: Run E2E Tests Unmocked
         working-directory: ./frontend
