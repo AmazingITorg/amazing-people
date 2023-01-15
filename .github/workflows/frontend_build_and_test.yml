@@ -213,7 +213,7 @@ jobs:
 
   
   Build-and-push-docker-image:
-    needs: [Build-and-Test, SonarCloud-Analysis, Snyk, E2E-Tests-unmocked]
+    needs: [E2E-Tests-unmocked]
     name: Build and push Docker image
     runs-on: ubuntu-latest
     outputs:
