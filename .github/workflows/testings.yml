@@ -2,6 +2,9 @@ name: Testings
 
 on:
   workflow_dispatch:
+  
+env:
+  CYPRESS_CACHE_FOLDER: cypress/cache
 
 jobs:
   Testingz:
@@ -148,8 +151,10 @@ jobs:
       - name: Build Frontend
         if: steps.cache-clt.outputs.cache-hit != 'true'
         working-directory: ./frontend
-        run: npm install
-     
+        run: |
+          npm install
+          npx cypress cache path
+
       - name: Run Backend
         working-directory: ./backend
         run: |
