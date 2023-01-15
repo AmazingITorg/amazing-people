@@ -60,6 +60,8 @@ jobs:
     needs: [Build-and-Test, SonarCloud-Analysis, Snyk]
     name: Build and push Docker image
     runs-on: ubuntu-latest
+    outputs:
+      imagetag: ${{ steps.dockertag.outputs.tag }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -76,7 +78,7 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_NAMESPACE }}/${{ secrets.DOCKER_FRONTEND_REPOSITORY }}
           tags: |
-            type=raw,dev
+            type=sha,format=long
             
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
@@ -85,7 +87,41 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          
+    
+  Update-Version:
+    needs: [Build-and-push-docker-image]
+    name: Update image version to trigger deployment
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      issues: write
+      discussions: write
+      packages: write
+      repository-projects: write
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        
+      - name: Update Version
+        run: |
+          echo ${{needs.Build-and-push-docker-image.outputs.imagetag}}
+          version=$(cat ./helm/values.yaml | grep tag_frontend_container: | awk '{print $2}')
+          echo $version
+          DOCKER_IMAGE_TAG=${{needs.Build-and-push-docker-image.outputs.imagetag}}
+          echo $DOCKER_IMAGE_TAG
+          sed -i "s/tag_frontend_container: $version/tag_frontend_container: $DOCKER_IMAGE_TAG/" ./helm/values.yaml
+          cat ./helm/values.yaml
+  
+      - name: Commit & Push new image version
+        uses: actions-js/push@v1.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: 'Version updated'
+          branch:  ${{ github.ref_name }}
+          repository: 'AmazingITorg/amazing-people'
+    
 #       - name: Run Trivy vulnerability scanner
 #         uses: aquasecurity/trivy-action@master
 #         with:
