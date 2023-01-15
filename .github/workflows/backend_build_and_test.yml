@@ -164,6 +164,14 @@ jobs:
     needs: [Build-and-push-docker-image]
     name: Update image version to trigger deployment
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      issues: write
+      discussions: write
+      packages: write
+      repository-projects: write
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -175,16 +183,18 @@ jobs:
           echo $version
           DOCKER_IMAGE_TAG=${{needs.Build-and-push-docker-image.outputs.imagetag}}
           echo $DOCKER_IMAGE_TAG
-          sed -i "s/$version/$DOCKER_IMAGE_TAG/" ./helm/values.yaml
+          sed -i "s/tag_backend_container: $version/tag_backend_container: $DOCKER_IMAGE_TAG/" ./helm/values.yaml
           cat ./helm/values.yaml
   
-#       - name: Commit & Push new image version
-#         uses: actions-js/push@v1.3
-#         with:
-#           github_token: ${{ secrets.GITHUB_TOKEN }}
-#           message: 'Version updated'
-#           branch:  ${{ github.ref_name }}
-#           repository: 'AmazingITorg/amazingness-service'
+      - name: Commit & Push new image version
+        uses: actions-js/push@v1.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: 'Version updated'
+          branch:  ${{ github.ref_name }}
+          repository: 'AmazingITorg/amazing-people'
+          
+          
 #       - name: Run Trivy vulnerability scanner
 #         uses: aquasecurity/trivy-action@master
 #         with:
