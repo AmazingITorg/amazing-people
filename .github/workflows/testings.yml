@@ -36,28 +36,22 @@ jobs:
         # Docker Hub image
         image: cekocvetkov/amazing-people-backend:sha-f619aa79125e1f3c908ab1acd429ebdb1e0c73d0
         env:
-          # optional (defaults to `postgres`)
           PGDATABASE: peopledb
-          # required
           PGPASSWORD: postgresPasswort
-          # optional (defaults to `5432`)
           PGPORT: 6432
-          # optional (defaults to `postgres`)
           PGUSER: postgresUser
           PGHOST: localhost
         ports:
-          # maps tcp port 5432 on service container to the host
           - 3001:3001
-        # set health checks to wait until postgres has started
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-  
+
       - name: Test
         run: |
           sleep 5s
-          curl localhost:3001
+          curl http://localhost:3001
   
 #       - name: Setup node
 #         uses: actions/setup-node@v3
