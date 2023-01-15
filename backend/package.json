@@ -7,7 +7,7 @@
 		"start": "node src/main/index.js",
 		"set-flyway-dev": "sed -i 's/<PGUSER>/postgresUser/' flyway/flyway.conf && sed -i 's/<PGPASSWORD>/postgresPasswort/' flyway/flyway.conf && sed -i 's/<PGDATABASE>/peopledb/' flyway/flyway.conf && sed -i 's/<PGPORT>/6432/' flyway/flyway.conf && sed -i 's/<PGHOST>/localhost/' flyway/flyway.conf",
 		"start-dev": "PGUSER=postgresUser PGHOST=localhost PGPASSWORD=postgresPasswort PGDATABASE=peopledb PGPORT=6432 node src/main/index.js",
-		"start-for-e2e": "AMAZING_ALG=http://localhost:8080 PGUSER=postgresUser PGHOST=localhost PGPASSWORD=postgresPasswort PGDATABASE=peopledb PGPORT=6432 node src/main/index.js",
+		"start-for-e2e": "AMAZING_ALG=http://localhost:8080/amazing PGUSER=postgresUser PGHOST=localhost PGPASSWORD=postgresPasswort PGDATABASE=peopledb PGPORT=6432 node src/main/index.js",
 		"test-in-pipeline": "PGUSER=<PIPELINE_PGUSER> PGHOST=<PIPELINE_PGHOST> PGPASSWORD=<PIPELINE_PGPASSWORD> PGDATABASE=<PIPELINE_PGDATABSE> PGPORT=<PIPELINE_PGPORT> jest --coverage --collectCoverageFrom='./src/main/**'",
 		"test": "jest --coverage --collectCoverageFrom='./src/main/**'",
 		"unit-tests": "npm test src/test/people-service.test.js",
