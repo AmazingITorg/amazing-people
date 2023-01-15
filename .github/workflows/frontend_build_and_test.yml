@@ -87,7 +87,14 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-    
+          
+      - name: Set docker image tag output
+        id: dockertag
+        run: |
+          DOCKER_IMAGE_TAG=`echo ${{ steps.meta.outputs.tags }} | cut -d ":" -f2`
+          echo $DOCKER_IMAGE_TAG
+          echo "tag=$DOCKER_IMAGE_TAG" >> $GITHUB_OUTPUT
+          
   Update-Version:
     needs: [Build-and-push-docker-image]
     name: Update image version to trigger deployment
