@@ -10,7 +10,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 
 spec:
-
+  ingressClassName: nginx
   rules:
 
     - http:
@@ -30,4 +30,3 @@ spec:
               port:
 
                 number: 80
-        
