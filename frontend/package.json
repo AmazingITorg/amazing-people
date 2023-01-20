@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "unit-tests-once": "ng test --watch=false --browsers=ChromeHeadless",
+    "unit-tests-once": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --spec 'cypress/e2e/mocked.cy.ts' --headless --browser chrome",
