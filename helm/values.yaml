@@ -9,7 +9,7 @@ image:
   repository_backend: docker.io/cekocvetkov/amazing-people-backend
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag_frontend_container: sha-79953717bc3d1c4d74afd03263dc71efe6d9b02a
+  tag_frontend_container: sha-95d517bf3cedc2029d19d02373285fe72d98765a
   tag_backend_container: sha-549fd23a2613fade9f951745cbc10f74aa27cd3a
 
 imagePullSecrets:
