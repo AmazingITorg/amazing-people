@@ -209,7 +209,7 @@ jobs:
             -Dsonar.organization=amazingitorg
             -Dsonar.projectKey=amazing-people-frontend
             -Dsonar.qualitygate.wait=true
-            -Dsonar.javascript.lcov.reportPaths=./frontend/coverage/frontend/lcov-report/lcov.info
+            -Dsonar.javascript.lcov.reportPaths=lcov.info
             -Dsonar.sources=./frontend/src/app
             -Dsonar.verbose=true
         env:
