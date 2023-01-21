@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import * as confetti from 'canvas-confetti';
 import { Observable } from 'rxjs';
 import { ConfigService } from '../config.service';
-
 interface Person {
   id: number;
   name: string;
@@ -21,6 +21,7 @@ export class PeopleComponent implements OnInit {
   people: Person[] = [];
   name = new FormControl('');
   errorMessage: string = '';
+  loading: string = '';
 
   constructor(private http: HttpClient, private config: ConfigService) {}
 
@@ -61,7 +62,17 @@ export class PeopleComponent implements OnInit {
       },
     });
   }
-
+  createConfetti() {
+    confetti.create()({
+      shapes: ['square'],
+      particleCount: 100,
+      spread: 90,
+      origin: {
+        y: 1,
+        x: 0.5,
+      },
+    });
+  }
   addNewAmazingPerson(newAmazingPersonName: string | null) {
     if (!newAmazingPersonName || newAmazingPersonName.length < 1) {
       return;
@@ -77,7 +88,9 @@ export class PeopleComponent implements OnInit {
             console.log(res);
             this.people = res;
           });
+          this.loading = '';
           this.ngOnInit();
+          this.createConfetti();
         },
         error: (error) => {
           this.errorMessage = error.error.message;
@@ -85,7 +98,9 @@ export class PeopleComponent implements OnInit {
             this.errorMessage = '';
           }, 5000);
           console.error('There was an error!', error);
+          this.loading = '';
         },
       });
+    this.loading = 'Loading...';
   }
 }

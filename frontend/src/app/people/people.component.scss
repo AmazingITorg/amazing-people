@@ -99,3 +99,9 @@ button:disabled,
 button[disabled] {
   background-color: #888888;
 }
+
+#loading {
+  position: absolute;
+  top: 0;
+  right: 5;
+}

@@ -4,7 +4,7 @@
         <div class="header">Amazing People</div>
 
         <div class="form">
-
+            <div id="loading">{{loading}}</div>
             <input id="name" type="text" [formControl]="name" (keyup.enter)="addNewAmazingPerson(name.value)" placeholder="Name">
             <button class="button" type="button" [disabled]="name.value === ''" (click)="addNewAmazingPerson(name.value)">Add new amazing person</button>
             <div class="error" *ngIf="errorMessage.length>0">{{errorMessage}}</div>
