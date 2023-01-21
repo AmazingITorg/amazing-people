@@ -1,0 +1,8 @@
+name: Build and deploy whole Amazing People App 
+on: 
+  workflow_dispatch:
+jobs:
+  Backend:
+    uses: ./.github/workflows/backend_build_and_test.yml 
+  Frontend:
+    uses: ./.github/workflows/frontend_build_and_test.yml
