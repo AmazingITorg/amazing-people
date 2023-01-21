@@ -258,6 +258,7 @@ jobs:
           
   Update-Version:
     needs: [Build-and-push-docker-image]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     name: Update image version to trigger deployment
     runs-on: ubuntu-latest
     permissions:
