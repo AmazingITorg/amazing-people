@@ -1,4 +1,4 @@
-name: Build and deploy whole Amazing People App 
+name: Build and deploy whole App 
 on: 
   workflow_dispatch:
 jobs:
