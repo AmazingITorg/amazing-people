@@ -8,7 +8,7 @@ on:
       - 'frontend/**'
 
 jobs:
-  Build-and-Test:
+  Build-and-Unit-Test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,7 +43,7 @@ jobs:
           retention-days: 1
 
   E2E-Tests-with-mocked-dependencies:
-    needs: [Build-and-Test]
+    needs: [Build-and-Unit-Test]
     runs-on: ubuntu-latest
     services:
       # label used to access the service container
@@ -114,7 +114,7 @@ jobs:
         run: npm run e2e-mocked
 
   E2E-Tests-unmocked:
-    needs: [Build-and-Test]
+    needs: [Build-and-Unit-Test]
     runs-on: ubuntu-latest
     services:
       # label used to access the service container
