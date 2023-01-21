@@ -1,6 +1,7 @@
 # Amazing People
 
-https://github.com/AmazingITorg/amazing-people/actions/workflows/frontend_build_and_test.yml/badge.svg
+![example workflow](https://github.com/AmazingITorg/amazing-people/actions/workflows/frontend_build_and_test.yml/badge.svg)
+
 
 https://github.com/AmazingITorg/amazing-people/actions/workflows/backend_build_and_test.yml/badge.svg
 
